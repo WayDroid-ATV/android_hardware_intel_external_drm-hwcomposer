@@ -17,10 +17,10 @@ LOCAL_PATH := $(call my-dir)
 ANDROID_VERSION := $(word 1, $(subst ., , $(PLATFORM_VERSION)))
 
 include $(CLEAR_VARS)
-LOCAL_MODULE:= hwcservice_test
+LOCAL_MODULE:= hwcservice_celadon_test
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../
 LOCAL_SRC_FILES:= hwcservice_test.cpp
-LOCAL_SHARED_LIBRARIES := libutils libbinder liblog libhwcservice
+LOCAL_SHARED_LIBRARIES := libutils libbinder liblog libhwcservice_celadon
 LOCAL_PROPRIETARY_MODULE := true
 ifeq ($(shell test $(ANDROID_VERSION) -ge 8; echo $$?), 0)
 LOCAL_CFLAGS += -DUSE_PROCESS_STATE

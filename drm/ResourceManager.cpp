@@ -208,9 +208,9 @@ void ResourceManager::Init() {
 
 void ResourceManager::HwcServiceThread() {
   typedef void (*StartHwcInfoService)(DrmHwcTwo*);
-  void *handle = dlopen("/vendor/lib64/hw/libhwcservicelib.so", RTLD_NOW);
+  void *handle = dlopen("/vendor/lib64/hw/libhwcservicelib_celadon.so", RTLD_NOW);
   if (!handle) {
-    ALOGE("dlopen /vendor/lib64/hw/libhwcservicelib.so fail");
+    ALOGE("dlopen /vendor/lib64/hw/libhwcservicelib_celadon.so fail");
     return;
   }
   StartHwcInfoService func = (StartHwcInfoService)dlsym(handle, "StartHwcInfoService");

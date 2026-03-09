@@ -13,7 +13,7 @@
 // limitations under the License.
 
 cc_library_headers {
-    name: "drm_hwcomposer_headers",
+    name: "drm_hwcomposer_celadon_headers",
     vendor: true,
     export_include_dirs: ["."],
 }
@@ -22,7 +22,7 @@ cc_library_headers {
 // hwcomposer.drm.so
 // =====================
 cc_defaults {
-    name: "hwcomposer.drm_defaults",
+    name: "hwcomposer.drm_celadon_defaults",
 
     shared_libs: [
         "libcutils",
@@ -40,7 +40,7 @@ cc_defaults {
     ],
 
     header_libs: [
-        "drm_hwcomposer_headers",
+        "drm_hwcomposer_celadon_headers",
     ],
 
     cflags: [
@@ -60,12 +60,12 @@ cc_defaults {
 }
 
 filegroup {
-    name: "drm_hwcomposer_fd",
+    name: "drm_hwcomposer_celadon_fd",
     srcs: ["utils/fd.cpp"],
 }
 
 filegroup {
-    name: "drm_hwcomposer_common",
+    name: "drm_hwcomposer_celadon_common",
     srcs: [
         "bufferinfo/BufferInfoGetter.cpp",
         "bufferinfo/BufferInfoMapperMetadata.cpp",
@@ -106,7 +106,7 @@ filegroup {
 }
 
 filegroup {
-    name: "drm_hwcomposer_hwc3",
+    name: "drm_hwcomposer_celadon_hwc3",
     srcs: [
         "hwc3/Composer.cpp",
         "hwc3/ComposerClient.cpp",
@@ -116,37 +116,37 @@ filegroup {
 }
 
 filegroup {
-    name: "drm_hwcomposer_service",
+    name: "drm_hwcomposer_celadon_service",
     srcs: [
         "hwc3/service.cpp",
     ],
 }
 
 filegroup {
-    name: "drm_hwcomposer_init_rc",
+    name: "drm_hwcomposer_celadon_init_rc",
     srcs: [
-        "hwc3/hwc3-drm.rc",
+        "hwc3/hwc3-drm_celadon.rc",
     ],
 }
 
 filegroup {
-    name: "drm_hwcomposer_vintf_manifest",
+    name: "drm_hwcomposer_celadon_vintf_manifest",
     srcs: [
-        "hwc3/hwc3-drm.xml",
+        "hwc3/hwc3-drm_celadon.xml",
     ],
 }
 
 cc_defaults {
-    name: "android.hardware.composer.hwc3-service.drm.defaults",
+    name: "android.hardware.composer.hwc3-service.drm_celadon.defaults",
 
     srcs: [
-        ":drm_hwcomposer_common",
-        ":drm_hwcomposer_hwc3",
-        ":drm_hwcomposer_service",
+        ":drm_hwcomposer_celadon_common",
+        ":drm_hwcomposer_celadon_hwc3",
+        ":drm_hwcomposer_celadon_service",
     ],
 
     defaults: [
-        "hwcomposer.drm_defaults",
+        "hwcomposer.drm_celadon_defaults",
     ],
 
     shared_libs: [
@@ -175,10 +175,10 @@ cc_defaults {
 }
 
 cc_binary {
-    name: "android.hardware.composer.hwc3-service.drm",
+    name: "android.hardware.composer.hwc3-service.drm_celadon",
 
     defaults: [
-        "android.hardware.composer.hwc3-service.drm.defaults",
+        "android.hardware.composer.hwc3-service.drm_celadon.defaults",
     ],
 
     srcs: ["bufferinfo/legacy/BufferInfoLibdrm.cpp"],
@@ -188,52 +188,44 @@ cc_binary {
     relative_install_path: "hw",
     vendor: true,
 
-    init_rc: [":drm_hwcomposer_init_rc"],
+    init_rc: [":drm_hwcomposer_celadon_init_rc"],
 }
 
 // Used by hwcomposer.drm_imagination
 filegroup {
-    name: "drm_hwcomposer_platformimagination",
+    name: "drm_hwcomposer_celadon_platformimagination",
     srcs: ["bufferinfo/legacy/BufferInfoImagination.cpp"],
 }
 
 // Used by hwcomposer.drm_hikey and hwcomposer.drm_hikey960
 filegroup {
-    name: "drm_hwcomposer_platformhisi",
+    name: "drm_hwcomposer_celadon_platformhisi",
     srcs: ["bufferinfo/legacy/BufferInfoMaliHisi.cpp"],
 }
 
 // Used by hwcomposer.drm_meson
 filegroup {
-    name: "drm_hwcomposer_platformmeson",
+    name: "drm_hwcomposer_celadon_platformmeson",
     srcs: ["bufferinfo/legacy/BufferInfoMaliMeson.cpp"],
 }
 
 // Used by hwcomposer.drm_mediatek
 filegroup {
-    name: "drm_hwcomposer_platformmediatek",
+    name: "drm_hwcomposer_celadon_platformmediatek",
     srcs: ["bufferinfo/legacy/BufferInfoMaliMediatek.cpp"],
 }
 
 prebuilt_etc {
-    name: "drm_hwcomposer_hwc3_apex_vintf",
-    src: "hwc3/hwc3-drm.xml",
-    sub_dir: "vintf",
-    vendor: true,
-    installable: false,
-}
-
-prebuilt_etc {
-    name: "drm_hwcomposer_hwc3_apex_init_rc",
+    name: "drm_hwcomposer_celadon_hwc3_apex_init_rc",
     filename_from_src: true,
     vendor: true,
-    src: ":gen-drm_hwcomposer_hwc3_apex_init_rc",
+    src: ":gen-drm_hwcomposer_celadon_hwc3_apex_init_rc",
 }
 
 genrule {
-    name: "gen-drm_hwcomposer_hwc3_apex_init_rc",
-    srcs: ["hwc3/hwc3-drm.rc"],
-    out: ["hwc3-drm.apex.rc"],
+    name: "gen-drm_hwcomposer_celadon_hwc3_apex_init_rc",
+    srcs: ["hwc3/hwc3-drm_celadon.rc"],
+    out: ["hwc3-drm_celadon.apex.rc"],
     cmd: "sed " +
         // Update the binary location to inside the Apex:
         "-e 's%/vendor/bin/%/apex/com.android.hardware.graphics.composer/bin/%' " +
@@ -241,46 +233,45 @@ genrule {
 }
 
 filegroup {
-    name: "drm_hwcomposer_hwc3_apex_file_contexts",
+    name: "drm_hwcomposer_celadon_hwc3_apex_file_contexts",
     srcs: [
         "hwc3/hwc3-apex-file-contexts",
     ],
 }
 
 filegroup {
-    name: "drm_hwcomposer_hwc3_apex_manifest",
+    name: "drm_hwcomposer_celadon_hwc3_apex_manifest",
     srcs: [
         "hwc3/hwc3-apex-manifest.json",
     ],
 }
 
 apex {
-    name: "com.android.hardware.graphics.composer.drm_hwcomposer",
+    name: "com.android.hardware.graphics.composer.drm_hwcomposer_celadon",
     key: "com.android.hardware.key",
     certificate: ":com.android.hardware.certificate",
-    file_contexts: ":drm_hwcomposer_hwc3_apex_file_contexts",
-    manifest: ":drm_hwcomposer_hwc3_apex_manifest",
+    file_contexts: ":drm_hwcomposer_celadon_hwc3_apex_file_contexts",
+    manifest: ":drm_hwcomposer_celadon_hwc3_apex_manifest",
     vendor: true,
     updatable: false,
     soc_specific: true,
     binaries: [
-        "android.hardware.composer.hwc3-service.drm",
+        "android.hardware.composer.hwc3-service.drm_celadon",
     ],
     prebuilts: [
-        "drm_hwcomposer_hwc3_apex_init_rc",
-        "drm_hwcomposer_hwc3_apex_vintf",
+        "drm_hwcomposer_celadon_hwc3_apex_init_rc",
     ],
 }
 
 cc_library_shared {
     srcs: [
-        ":drm_hwcomposer_common",
+        ":drm_hwcomposer_celadon_common",
         "hwc2_device/hwcservice.cpp",
         "hwc2_device/hwcservice_lib.cpp",
     ],
-    name: "libhwcservicelib",
+    name: "libhwcservicelib_celadon",
     defaults: [
-        "hwcomposer.drm_defaults",
+        "hwcomposer.drm_celadon_defaults",
     ],
 
     shared_libs: [
@@ -288,7 +279,7 @@ cc_library_shared {
         "libutils",
         "libbinder",
         "liblog",
-        "libhwcservice",
+        "libhwcservice_celadon",
     ],
     vendor: true,
     compile_multilib: "both",
